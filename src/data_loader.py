@@ -11,7 +11,7 @@ def load_and_preprocess_data(
     drop_cols: Optional[List[str]] = None,
     test_size: float = 0.2, 
     random_state: int = 42
-) -> Tuple[np.ndarray, np.ndarray, np.ndarray, np.ndarray, LabelEncoder]:
+) -> Tuple[np.ndarray, np.ndarray, np.ndarray, np.ndarray, LabelEncoder, np.ndarray]:
     
     df = pd.read_csv(csv_path)
     if drop_cols:
@@ -47,9 +47,11 @@ def load_and_preprocess_data(
     
     X_train_processed = preprocessor.fit_transform(X_train)
     X_test_processed = preprocessor.transform(X_test)
+
+    feature_names = preprocessor.get_feature_names_out()
     
     le = LabelEncoder()
     y_train_encoded = le.fit_transform(y_train)
     y_test_encoded = le.transform(y_test)
     
-    return X_train_processed, X_test_processed, y_train_encoded, y_test_encoded, le
+    return X_train_processed, X_test_processed, y_train_encoded, y_test_encoded, le, feature_names
